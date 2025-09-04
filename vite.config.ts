@@ -3,8 +3,5 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  optimizeDeps: {
-    exclude: ['lucide-react'],
-  },
-  base: '/Cozzi_Web/', // <-- Aggiungi questa linea
+  base: '/Cozzi_Web/', // Importante per GitHub Pages!
 });
