@@ -1,0 +1,41 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: ["main"]  # Esegue il workflow solo quando fai push su main
+
+permissions:
+  contents: write  # Permette al workflow di scrivere nel repository
+  pages: write     # Permette di configurare GitHub Pages
+  id-token: write   # Permette di deployare su GitHub Pages
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest  # Esegue il workflow su una macchina virtuale Ubuntu
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4  # Clona il repository
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20  # Usa Node.js 20 (puoi cambiare versione se necessario)
+
+      - name: Install dependencies
+        run: npm install  # Installa le dipendenze del progetto
+
+      - name: Build
+        run: npm run build  # Esegue il build (genera la cartella dist/)
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4  # Configura GitHub Pages
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'  # Carica la cartella dist/ come artifact
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4  # Deploya su GitHub Pages
